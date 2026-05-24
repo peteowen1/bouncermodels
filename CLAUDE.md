@@ -42,4 +42,4 @@ Rscript data-raw/upload_models.R
 
 ## Related Projects
 
-Part of the bouncerverse ecosystem. See `~/OneDrive/Documents/bouncerverse/CLAUDE.md` for the monorepo overview. Mirrors the torpmodels pattern from torpverse. For full ecosystem: `~/OneDrive/Documents/ECOSYSTEM.md`
+Part of the bouncerverse ecosystem. See `C:\dev\bouncerverse\CLAUDE.md` for the monorepo overview. Mirrors the torpmodels pattern from torpverse. For full ecosystem: `C:\dev\ECOSYSTEM.md`
