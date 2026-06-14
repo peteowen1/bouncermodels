@@ -2,6 +2,10 @@
 
 Pre-trained ML models for cricket analytics, served via GitHub releases with local caching.
 
+## Git Workflow
+- Work on `dev` branch, not directly on `main`
+- PR from `dev` -> `main` when changes are tested and stable
+
 ## Package Overview
 
 **bouncermodels** provides pre-trained models for the bouncer R package. Minimal package (2 R files) — no data processing logic, just model loading and caching.
