@@ -251,7 +251,7 @@ load_model_file <- function(path, label = basename(path)) {
         "i" = "Install with: {.code install.packages('xgboost')}"
       ))
     }
-    return(xgboost::xgb.load(path))
+    return(safe_load_ubj(path, label))
   }
 
   if (ext == "rds") {
@@ -259,6 +259,24 @@ load_model_file <- function(path, label = basename(path)) {
   }
 
   cli::cli_abort("Unsupported model format: .{ext}")
+}
+
+#' Safely load an XGBoost .ubj file with error handling
+#'
+#' Mirrors safe_read_rds(): if the cached file is corrupt/truncated (only
+#' caught here, since the size check in download_model_from_release lets
+#' small-but-invalid files through), delete it so the next call re-downloads
+#' instead of failing forever against the same bad cache entry.
+#' @keywords internal
+safe_load_ubj <- function(path, label = basename(path)) {
+  tryCatch(
+    xgboost::xgb.load(path),
+    error = function(e) {
+      msg <- conditionMessage(e)
+      unlink(path)
+      cli::cli_abort("Model file for {label} is corrupted: {msg}. Cache cleared, try again.")
+    }
+  )
 }
 
 #' Safely read an RDS file with error handling
