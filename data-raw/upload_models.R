@@ -2,9 +2,18 @@
 # Upload existing model files from bouncerdata/models/ to bouncermodels releases.
 # Run once to populate the releases, then ad-hoc after retraining.
 #
+# ECOSYSTEM-FIX-PLAN.md M6: routed through vb_publish() (vendored in
+# R/versebus.R) instead of a plain pb_upload(..., overwrite = TRUE) loop --
+# hash-first, bounded-retry upload, post-upload verify against the live
+# asset list, then bus_manifest.json uploaded LAST and only if every file in
+# the tag succeeded. A failed upload aborts before the manifest, so
+# consumers (`.get_bus_manifest()` / `.bm_cache_is_fresh()` in
+# R/load_model.R) keep seeing the last consistent tag snapshot instead of a
+# torn one.
+#
 # Usage: Rscript data-raw/upload_models.R
 
-library(piggyback)
+devtools::load_all(".")
 library(cli)
 
 REPO <- "peteowen1/bouncermodels"
@@ -50,25 +59,23 @@ for (tag in names(releases)) {
   cli_h2("Release: {tag}")
 
   tryCatch(
-    pb_release_create(repo = REPO, tag = tag, name = paste("Bouncer", tag, "models")),
+    piggyback::pb_release_create(repo = REPO, tag = tag, name = paste("Bouncer", tag, "models")),
     error = function(e) cli_alert_info("Release '{tag}' already exists")
   )
 
   files <- releases[[tag]]
-  for (f in files) {
-    path <- file.path(MODELS_DIR, f)
-    if (file.exists(path)) {
-      tryCatch({
-        pb_upload(path, repo = REPO, tag = tag, overwrite = TRUE)
-        size_mb <- round(file.size(path) / 1024 / 1024, 1)
-        cli_alert_success("{f} ({size_mb} MB)")
-      }, error = function(e) {
-        cli_alert_danger("Failed to upload {f}: {e$message}")
-      })
-    } else {
-      cli_alert_warning("Not found: {f}")
-    }
+  paths <- file.path(MODELS_DIR, files)
+  present <- paths[file.exists(paths)]
+  missing <- paths[!file.exists(paths)]
+  for (m in missing) cli_alert_warning("Not found: {basename(m)}")
+
+  if (length(present) == 0) {
+    cli_alert_info("No local files for tag {tag}, nothing to publish")
+    next
   }
+
+  vb_publish(present, repo = REPO, tag = tag)
+  cli_alert_success("Published {length(present)} file(s) to {tag} (bus_manifest.json updated)")
 }
 
 cli_h1("Upload Complete")

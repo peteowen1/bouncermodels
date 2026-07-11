@@ -7,6 +7,15 @@
 download_model_from_release(file_name, release_tag, local_path, verbose = TRUE)
 }
 \description{
-Download model from GitHub release
+Verifies sha256 against \code{bus_manifest.json} when the tag's manifest
+tracks this file -- replacing the old \code{file.size > 100} heuristic, which
+is now only a last-resort fallback for tags/files with no manifest entry
+to compare against (legacy mode). Each download attempt lands in a
+tempdir created beside the destination and is moved into place
+atomically via \code{vb_atomic_write()}, with a \verb{<local_path>.sha256} sidecar
+written alongside on success. A failed integrity check deletes the temp
+and retries the SAME method once before falling through to the next
+method (piggyback, then a direct release URL); a pre-existing
+\code{local_path} is never touched by a failed download.
 }
 \keyword{internal}
