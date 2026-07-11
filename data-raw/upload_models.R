@@ -17,7 +17,7 @@ devtools::load_all(".")
 library(cli)
 
 REPO <- "peteowen1/bouncermodels"
-MODELS_DIR <- "C:/Users/peteo/OneDrive/Documents/bouncerverse/bouncerdata/models"
+MODELS_DIR <- "C:/dev/bouncerverse/bouncerdata/models"
 
 cli_h1("Upload Models to bouncermodels")
 
