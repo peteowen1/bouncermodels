@@ -6,7 +6,7 @@ Pre-trained ML models for cricket analytics, served via GitHub releases with loc
 - Work on `dev` branch, not directly on `main`
 - PR from `dev` -> `main` when changes are tested and stable
 
-Verse-level docs (reviews, plans, decision log, work queue) live in `../CLAUDE.md`'s vault at `bouncerverse/` — see `../HOME.md`.
+Verse-level docs (reviews, plans, decision log, work queue) live in `../CLAUDE.md`'s vault at `bouncerverse/` — see `../docs/HOME.md`.
 
 ## Package Overview
 
