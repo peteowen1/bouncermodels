@@ -326,6 +326,25 @@ load_model_file <- function(path, label = basename(path)) {
   cli::cli_abort("Unsupported model format: .{ext}")
 }
 
+#' Make a condition message safe to interpolate into a cli message
+#'
+#' Errors raised from compiled code (xgboost especially) can carry bytes that
+#' are not valid in the session encoding, plus a multi-line stack trace. cli's
+#' inline formatting runs `grepl()`/`gsub()` over the interpolated value, which
+#' itself errors on invalid input — so the abort we meant to raise never
+#' reaches the caller and the real cause is lost. Force valid UTF-8 and keep
+#' only the first line.
+#' @keywords internal
+clean_condition_message <- function(msg) {
+  msg <- iconv(paste(msg, collapse = " "), to = "UTF-8", sub = "?")
+  if (length(msg) == 0L || is.na(msg) || !nzchar(msg)) {
+    return("unknown error")
+  }
+  msg <- strsplit(msg, "\n", fixed = TRUE)[[1]][1]
+  if (nchar(msg) > 200L) msg <- paste0(substr(msg, 1L, 200L), "...")
+  msg
+}
+
 #' Safely load an XGBoost .ubj file with error handling
 #'
 #' Mirrors safe_read_rds(): if the cached file is corrupt/truncated (only
@@ -337,7 +356,7 @@ safe_load_ubj <- function(path, label = basename(path)) {
   tryCatch(
     xgboost::xgb.load(path),
     error = function(e) {
-      msg <- conditionMessage(e)
+      msg <- clean_condition_message(conditionMessage(e))
       unlink(path)
       unlink(paste0(path, ".sha256"))
       cli::cli_abort("Model file for {label} is corrupted: {msg}. Cache cleared, try again.")
@@ -351,7 +370,7 @@ safe_read_rds <- function(path, label = basename(path)) {
   tryCatch(
     readRDS(path),
     error = function(e) {
-      msg <- conditionMessage(e)
+      msg <- clean_condition_message(conditionMessage(e))
       is_corruption <- grepl(
         "unknown input format|not an RDS file|decompression|bad restore file",
         msg, ignore.case = TRUE
