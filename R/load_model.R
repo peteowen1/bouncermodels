@@ -32,7 +32,6 @@
   "odi_stage1_projected_score" = "ODI in-match projected score model",
   "odi_stage2_win_probability" = "ODI in-match win probability model",
   "test_stage1_projected_score" = "Test in-match projected score model",
-  "test_win_probability" = "Test in-match win probability model",
   "test_result_model" = "Test match result prediction model",
   "test_conditional_win_model" = "Test conditional win probability model"
 )

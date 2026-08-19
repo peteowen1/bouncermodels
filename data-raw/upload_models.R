@@ -59,11 +59,17 @@ releases <- list(
     "odi_prediction_features.rds",
     "test_prediction_features.rds"
   ),
+  # test_win_probability.ubj is deliberately ABSENT (bouncerverse#52,
+  # 2026-08-20). The v1 single-3-class Test model scored mlogloss 1.510 against
+  # a base-rate baseline of 1.099 -- 37.2% WORSE than predicting the class
+  # frequencies -- and nothing in bouncer had loaded it since v3 landed.
+  # Publishing a model worse than a constant is worse than publishing nothing.
+  # The decomposed v3 pair (test_result_model, test_conditional_win_model) is
+  # what serves Test win probability.
   "in-match" = c(
     "odi_stage1_projected_score.ubj",
     "odi_stage2_win_probability.ubj",
     "test_stage1_projected_score.ubj",
-    "test_win_probability.ubj",
     "test_result_model.ubj",
     "test_conditional_win_model.ubj"
   )
