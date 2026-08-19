@@ -19,19 +19,33 @@ library(cli)
 REPO <- "peteowen1/bouncermodels"
 MODELS_DIR <- "C:/dev/bouncerverse/bouncerdata/models"
 
+# Which tags to publish. NULL = all. Set this to republish one family without
+# touching the others -- which matters, because the three families are on
+# different vintages and "publish everything" is not always the right act.
+# Usage: TAGS <- "ball-outcome"; source("data-raw/upload_models.R")
+if (!exists("TAGS")) TAGS <- NULL
+
 cli_h1("Upload Models to bouncermodels")
 
 if (!dir.exists(MODELS_DIR)) cli_abort("Models directory not found: {MODELS_DIR}")
 
 # Define release tags and which models go where
 releases <- list(
+  # full_outcome_* is deliberately ABSENT (bouncerverse#50, 2026-08-19).
+  #
+  # Every full model that has ever existed was trained before the 2026-08-18
+  # post-delivery leak fix, so publishing one would ship a model whose features
+  # knew the delivery's own outcome. The three that were on this release were
+  # removed rather than replaced: there is no correct one to replace them with
+  # until the 3-way ELO inputs are rebuilt and it is retrained (#63, #65).
+  #
+  # bouncer's loaders now refuse an unstamped or pre-fix outcome model
+  # (.check_model_vintage()), so a stale artefact cannot serve silently again.
+  # Add full_outcome_* back here in the same commit that retrains them.
   "ball-outcome" = c(
     "agnostic_outcome_t20.ubj",
     "agnostic_outcome_odi.ubj",
-    "agnostic_outcome_test.ubj",
-    "full_outcome_t20.ubj",
-    "full_outcome_odi.ubj",
-    "full_outcome_test.ubj"
+    "agnostic_outcome_test.ubj"
   ),
   "prediction" = c(
     "t20_prediction_model.ubj",
@@ -55,7 +69,11 @@ releases <- list(
   )
 )
 
-for (tag in names(releases)) {
+publish_tags <- if (is.null(TAGS)) names(releases) else intersect(TAGS, names(releases))
+if (length(publish_tags) == 0) cli_abort("No matching tags in {.val {TAGS}}")
+if (!is.null(TAGS)) cli_alert_info("Publishing only: {paste(publish_tags, collapse = ', ')}")
+
+for (tag in publish_tags) {
   cli_h2("Release: {tag}")
 
   tryCatch(
