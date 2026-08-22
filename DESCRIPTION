@@ -1,6 +1,6 @@
 Package: bouncermodels
 Title: Pre-Trained Models for Cricket Analytics
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R:
     person("Pete", "Owen", email = "peteowen1@gmail.com", role = c("aut", "cre"))
 Description: Provides pre-trained machine learning models for cricket analytics,
