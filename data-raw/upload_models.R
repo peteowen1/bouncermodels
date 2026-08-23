@@ -41,11 +41,30 @@ releases <- list(
   #
   # bouncer's loaders now refuse an unstamped or pre-fix outcome model
   # (.check_model_vintage()), so a stale artefact cannot serve silently again.
-  # Add full_outcome_* back here in the same commit that retrains them.
+  #
+  # RESTORED 2026-08-22. The condition above is met: all three were retrained
+  # on 2026-08-21, after MODEL_LEAK_FIX_DATE (2026-08-18), and each carries
+  # bouncer_build_date = 2026-08-21 -- verified by reading the attribute off
+  # the files, not inferred from mtimes. They are also the FIRST full models
+  # trained with real 3-way ELO features: previously all three ELO columns
+  # were a constant 1400 for every row because a gender-free table name
+  # matched an empty table (#63). Matched, bootstrapped-by-match gain over the
+  # agnostic model: T20 +1.80%, ODI +1.69%, Test +2.34% (#65).
+  #
+  # KNOWN GAP, tracked as #76: these three carry NO feature-name attribute --
+  # they predate that stamping fix, so serving alignment can only be checked
+  # by WIDTH (31/31/28, verified to match prepare_full_features()). Two frames
+  # of the same width in a different column ORDER would predict nonsense
+  # silently. They are NOT back-stamped here: the correct order has only been
+  # verified by width, and stamping a guessed order would manufacture
+  # confidence rather than provide it. The next retrain will carry it.
   "ball-outcome" = c(
     "agnostic_outcome_t20.ubj",
     "agnostic_outcome_odi.ubj",
-    "agnostic_outcome_test.ubj"
+    "agnostic_outcome_test.ubj",
+    "full_outcome_t20.ubj",
+    "full_outcome_odi.ubj",
+    "full_outcome_test.ubj"
   ),
   "prediction" = c(
     "t20_prediction_model.ubj",
