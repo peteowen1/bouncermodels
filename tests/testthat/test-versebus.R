@@ -242,7 +242,7 @@ test_that("manifest merge carries forward previous entries on partial publish", 
   expect_setequal(nms, c("new.parquet", "old.parquet"))
 })
 
-# Ported from torp/tests/testthat/test-versebus.R -- four silent-failure
+# Ported from torp/tests/testthat/test-versebus.R -- five silent-failure
 # fixes brought over from the canonical copy (see R/versebus.R comments at
 # each site for the full rationale).
 

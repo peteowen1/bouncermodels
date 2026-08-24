@@ -119,7 +119,17 @@ get_models_dir <- function() {
 #' @keywords internal
 .bm_cache_is_fresh <- function(repo, tag, file_name, local_path, verbose = TRUE) {
   manifest <- .get_bus_manifest(repo, tag, verbose)
-  if (is.null(manifest) || is.null(manifest$assets)) return(TRUE)
+  if (is.null(manifest)) return(TRUE)  # fetch failure -- already warned inside .get_bus_manifest()
+  if (is.null(manifest$assets)) {
+    # Distinct from a fetch failure: the manifest was fetched and parsed, but
+    # doesn't have the shape this code expects (schema drift, or a manifest
+    # written mid-corruption that still parses). That is a stronger signal
+    # than "couldn't fetch" and deserves its own warning, not silence.
+    if (verbose) {
+      cli::cli_warn("bus_manifest.json for {.val {tag}} has no {.field assets} field -- skipping cache verification this session")
+    }
+    return(TRUE)
+  }
   entry <- .vb_manifest_entry_for(manifest, file_name)
   if (is.null(entry) || is.null(entry$sha256)) return(TRUE)
   vb_cache_validate(local_path, entry)

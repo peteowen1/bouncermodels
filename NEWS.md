@@ -2,9 +2,9 @@
 
 ## Bug fixes
 
-* **`versebus.R`: four silent-failure defects ported from torp's canonical
+* **`versebus.R`: five silent-failure defects ported from torp's canonical
   copy (`torpverse/torp@` versebus fix, `VERSEBUS_VERSION` 1.1.0; this repo
-  was still carrying all four).** All four turned a transient failure into a
+  was still carrying all five).** All five turned a transient failure into a
   silently-accepted "everything is fine":
   * `vb_read_manifest()`'s retry-once branch classified every error as
     "confirmed absent" instead of reusing `vb_classify_error()` like the

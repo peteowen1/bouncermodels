@@ -111,7 +111,16 @@ for (tag in publish_tags) {
 
   tryCatch(
     piggyback::pb_release_create(repo = REPO, tag = tag, name = paste("Bouncer", tag, "models")),
-    error = function(e) cli_alert_info("Release '{tag}' already exists")
+    error = function(e) {
+      # Any pb_release_create() error lands here, not just "already exists" --
+      # an expired token or a network blip would print a confident but wrong
+      # diagnosis and then fail later, disconnected from its real cause.
+      if (grepl("already_exists|422", conditionMessage(e))) {
+        cli_alert_info("Release '{tag}' already exists")
+      } else {
+        cli_abort("Could not create release '{tag}': {conditionMessage(e)}")
+      }
+    }
   )
 
   files <- releases[[tag]]
