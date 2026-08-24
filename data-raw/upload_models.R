@@ -83,22 +83,26 @@ releases <- list(
   # a base-rate baseline of 1.099 -- 37.2% WORSE than predicting the class
   # frequencies -- and nothing in bouncer had loaded it since v3 landed.
   # Publishing a model worse than a constant is worse than publishing nothing.
-  # The decomposed v3 pair (test_result_model, test_conditional_win_model) is
-  # what serves Test win probability.
+  # The decomposed v3 pair (result + conditional models) is what serves Test
+  # win probability, bundled inside test_winprob_v3_results.rds below.
   #
-  # T20 stage1/stage2 ADDED 2026-08-24 (bouncerverse#53 / D-P49). ODI and Test
-  # were published here; T20 wasn't, with no decision behind the asymmetry.
-  # The rule is now: every in-match model with training data gets published.
-  # T20's stage1/stage2 pair is the same shape as ODI's and was trained the
-  # same day (2026-08-20) -- no staleness gap to account for.
+  # T20 stage1/stage2 ADDED 2026-08-24 (bouncerverse#53 / D-P49); RESHAPED
+  # THE SAME DAY (bouncerverse#81 / D-P54). The first pass published bare
+  # .ubj models (t20_stage1_projected_score.ubj etc.) -- but
+  # bouncer::load_in_match_models() / load_test_in_match_models() read
+  # `{format}_stageN_results.rds` and pull BOTH `$model` and `$feature_cols`
+  # out of one object; a bare model with no feature list can't be scored.
+  # Publishing the .ubj alone was real work that produced files nothing
+  # could consume. Publishing the .rds bundles instead, matching exactly
+  # what the loaders read locally, so publication and consumption can't
+  # drift apart the way they just did.
   "in-match" = c(
-    "t20_stage1_projected_score.ubj",
-    "t20_stage2_win_probability.ubj",
-    "odi_stage1_projected_score.ubj",
-    "odi_stage2_win_probability.ubj",
-    "test_stage1_projected_score.ubj",
-    "test_result_model.ubj",
-    "test_conditional_win_model.ubj"
+    "t20_stage1_results.rds",
+    "t20_stage2_results.rds",
+    "odi_stage1_results.rds",
+    "odi_stage2_results.rds",
+    "test_stage1_results.rds",
+    "test_winprob_v3_results.rds"
   )
 )
 

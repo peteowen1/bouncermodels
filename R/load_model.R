@@ -28,14 +28,19 @@
 )
 
 #' @noRd
+# These are .rds BUNDLES (model + feature_cols), not bare .ubj models --
+# bouncer::load_in_match_models() / load_test_in_match_models() read
+# `{format}_stageN_results.rds` and pull `$model`/`$feature_cols` out of one
+# object, because a bare model with no feature list can't be scored against.
+# The .ubj-only registration this replaced (bouncerverse#53/#81) published
+# real files that nothing could actually consume for that reason.
 .IN_MATCH_MODELS <- c(
-  "t20_stage1_projected_score" = "T20 in-match projected score model",
-  "t20_stage2_win_probability" = "T20 in-match win probability model",
-  "odi_stage1_projected_score" = "ODI in-match projected score model",
-  "odi_stage2_win_probability" = "ODI in-match win probability model",
-  "test_stage1_projected_score" = "Test in-match projected score model",
-  "test_result_model" = "Test match result prediction model",
-  "test_conditional_win_model" = "Test conditional win probability model"
+  "t20_stage1_results" = "T20 in-match stage 1 (projected score) model + features",
+  "t20_stage2_results" = "T20 in-match stage 2 (win probability) model + features",
+  "odi_stage1_results" = "ODI in-match stage 1 (projected score) model + features",
+  "odi_stage2_results" = "ODI in-match stage 2 (win probability) model + features",
+  "test_stage1_results" = "Test in-match stage 1 (projected score) model + features",
+  "test_winprob_v3_results" = "Test decomposed win-probability v3 models (result + conditional)"
 )
 
 #' Get the bouncermodels repository
@@ -301,9 +306,9 @@ resolve_model <- function(model_name) {
     return(list(file = paste0(model_name, ".ubj"), tag = "prediction"))
   }
 
-  # In-match models (.ubj format)
+  # In-match models (.rds bundles -- see the comment on .IN_MATCH_MODELS)
   if (model_name %in% names(.IN_MATCH_MODELS)) {
-    return(list(file = paste0(model_name, ".ubj"), tag = "in-match"))
+    return(list(file = paste0(model_name, ".rds"), tag = "in-match"))
   }
 
   # Also try with .rds extension for older models
