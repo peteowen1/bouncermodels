@@ -85,7 +85,15 @@ releases <- list(
   # Publishing a model worse than a constant is worse than publishing nothing.
   # The decomposed v3 pair (test_result_model, test_conditional_win_model) is
   # what serves Test win probability.
+  #
+  # T20 stage1/stage2 ADDED 2026-08-24 (bouncerverse#53 / D-P49). ODI and Test
+  # were published here; T20 wasn't, with no decision behind the asymmetry.
+  # The rule is now: every in-match model with training data gets published.
+  # T20's stage1/stage2 pair is the same shape as ODI's and was trained the
+  # same day (2026-08-20) -- no staleness gap to account for.
   "in-match" = c(
+    "t20_stage1_projected_score.ubj",
+    "t20_stage2_win_probability.ubj",
     "odi_stage1_projected_score.ubj",
     "odi_stage2_win_probability.ubj",
     "test_stage1_projected_score.ubj",

@@ -29,6 +29,8 @@
 
 #' @noRd
 .IN_MATCH_MODELS <- c(
+  "t20_stage1_projected_score" = "T20 in-match projected score model",
+  "t20_stage2_win_probability" = "T20 in-match win probability model",
   "odi_stage1_projected_score" = "ODI in-match projected score model",
   "odi_stage2_win_probability" = "ODI in-match win probability model",
   "test_stage1_projected_score" = "Test in-match projected score model",
