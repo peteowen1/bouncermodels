@@ -10,8 +10,9 @@ test_that("resolve_model resolves known prediction and in-match models", {
   pred_info <- resolve_model("t20_prediction_model")
   expect_equal(pred_info$tag, "prediction")
 
-  in_match_info <- resolve_model("odi_stage1_projected_score")
+  in_match_info <- resolve_model("odi_stage1_results")
   expect_equal(in_match_info$tag, "in-match")
+  expect_equal(in_match_info$file, "odi_stage1_results.rds")
 })
 
 test_that("resolve_model is case-insensitive", {
