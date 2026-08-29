@@ -96,11 +96,20 @@ releases <- list(
   # could consume. Publishing the .rds bundles instead, matching exactly
   # what the loaders read locally, so publication and consumption can't
   # drift apart the way they just did.
+  # t20/odi_innings1_results ADDED 2026-08-29. This was the last in-match
+  # model with no release path at all -- see the comment on .IN_MATCH_MODELS
+  # in bouncermodels/R/load_model.R for why that mattered (it's the model
+  # build_cricinfo_win_probability() uses for 1st innings, and that function
+  # feeds the WPA that reaches calculate_impact()/the ratings, not just a
+  # chart). No Test variant: Test uses the decomposed v3 pipeline instead
+  # (test_winprob_v3_results below), which never calls this path.
   "in-match" = c(
     "t20_stage1_results.rds",
     "t20_stage2_results.rds",
+    "t20_innings1_results.rds",
     "odi_stage1_results.rds",
     "odi_stage2_results.rds",
+    "odi_innings1_results.rds",
     "test_stage1_results.rds",
     "test_winprob_v3_results.rds"
   )
