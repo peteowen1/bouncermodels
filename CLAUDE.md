@@ -33,7 +33,7 @@ devtools::document()
 |-------------|--------|--------|--------|
 | `ball-outcome` | agnostic_outcome_{t20,odi,test}, full_outcome_{t20,odi,test} | .ubj | bouncer pipeline steps 2, 7 |
 | `prediction` | {t20,odi,test}_prediction_model, {t20,odi,test}_margin_model, ipl_prediction_model | .ubj | bouncer pipeline step 9 |
-| `in-match` | {t20,odi}_stage{1,2}_results, test_stage1_results, test_winprob_v3_results | .rds (bundle: `$model` + `$feature_cols`, not a bare model — bouncerverse#81/D-P54) | bouncer pipeline step 12 |
+| `in-match` | {t20,odi}_stage{1,2}_results, {t20,odi}_innings1_results, test_stage1_results, test_winprob_v3_results | .rds (bundle: `$model` + `$feature_cols`, not a bare model — bouncerverse#81/D-P54) | bouncer pipeline step 12 |
 
 ### Caching
 
