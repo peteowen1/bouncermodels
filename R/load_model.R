@@ -36,11 +36,20 @@
 # real files that nothing could actually consume for that reason.
 .IN_MATCH_MODELS <- c(
   "t20_stage1_results" = "T20 in-match stage 1 (projected score) model + features",
-  "t20_stage2_results" = "T20 in-match stage 2 (win probability) model + features",
+  "t20_stage2_results" = "T20 in-match stage 2 (win probability, 2nd innings/chase) model + features",
   "odi_stage1_results" = "ODI in-match stage 1 (projected score) model + features",
-  "odi_stage2_results" = "ODI in-match stage 2 (win probability) model + features",
+  "odi_stage2_results" = "ODI in-match stage 2 (win probability, 2nd innings/chase) model + features",
   "test_stage1_results" = "Test in-match stage 1 (projected score) model + features",
-  "test_winprob_v3_results" = "Test decomposed win-probability v3 models (result + conditional)"
+  "test_winprob_v3_results" = "Test decomposed win-probability v3 models (result + conditional)",
+  # 1st innings win probability -- added 2026-08-29. Previously had NO release
+  # path at all (local-disk-only in bouncer::load_in_match_models()), despite
+  # being used directly by build_cricinfo_win_probability() to score the WPA
+  # that feeds calculate_impact() since D-P6 (2026-08-13) -- a consumer without
+  # this exact local file silently fell back to a logistic heuristic for every
+  # 1st-innings ball. Together with *_stage2_results (2nd innings/chase) this
+  # is the other half of full-match win probability coverage.
+  "t20_innings1_results" = "T20 in-match 1st innings win probability model + features",
+  "odi_innings1_results" = "ODI in-match 1st innings win probability model + features"
 )
 
 #' Get the bouncermodels repository
