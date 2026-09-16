@@ -23,9 +23,10 @@ devtools::document()
 
 ## Architecture
 
-### R Code (2 files)
+### R Code (3 files)
 - `R/load_model.R` — All exports: `load_bouncer_model()`, `list_available_models()`, `check_model_cache()`, `clear_model_cache()`
 - `R/bouncermodels-package.R` — Package docs
+- `R/versebus.R` — Vendored, canonical copy is `torpverse/torp/R/versebus.R`; `test-versebus-sync.R` pins this file's contents to it byte-for-byte — never edit locally, sync from torp instead
 
 ### Model Categories
 
