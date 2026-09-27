@@ -2,15 +2,13 @@
 
 Pre-trained ML models for cricket analytics, served via GitHub releases with local caching.
 
-## Git Workflow
-- Work on `dev` branch, not directly on `main`
-- PR from `dev` -> `main` when changes are tested and stable
+## Docs
 
-Verse-level docs (reviews, plans, decision log, work queue) live in `../CLAUDE.md`'s vault at `bouncerverse/` — see `../docs/HOME.md`.
+Git workflow (branch, PR-to-main) is in the global and parent CLAUDE.md, not restated here. Verse-level docs (reviews, plans, decision log, work queue) live in the parent's `bouncerverse/docs/` — start at `../docs/HOME.md`.
 
 ## Package Overview
 
-**bouncermodels** provides pre-trained models for the bouncer R package. Minimal package (2 R files) — no data processing logic, just model loading and caching.
+**bouncermodels** provides pre-trained models for the bouncer R package. Minimal package (3 R files) — no data processing logic, just model loading and caching.
 
 ## Development Commands
 
