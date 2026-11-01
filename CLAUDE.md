@@ -24,7 +24,7 @@ devtools::document()
 ### R Code (3 files)
 - `R/load_model.R` — All exports: `load_bouncer_model()`, `list_available_models()`, `check_model_cache()`, `clear_model_cache()`
 - `R/bouncermodels-package.R` — Package docs
-- `R/versebus.R` — Vendored, canonical copy is `torpverse/torp/R/versebus.R`; `test-versebus-sync.R` pins this file's contents to it byte-for-byte — never edit locally, sync from torp instead
+- `R/versebus.R` — Vendored, canonical copy is `torpverse/torp/R/versebus.R`; `test-versebus-sync.R` pins only the shared function block (`SHARED_VERSEBUS_FUNCTIONS`) to it, compared function by function, not the whole file — never hand-edit those functions, sync them from torp instead. Two constants, `VB_TRUE_SIZE_TIMEOUT_SECS` and `VB_ASSET_CONFIRMED_ABSENT`, are defined locally at the top of the file (torp keeps them in `constants_data.R`); their values must match torp's
 
 ### Model Categories
 
