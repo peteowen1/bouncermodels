@@ -2,15 +2,13 @@
 
 Pre-trained ML models for cricket analytics, served via GitHub releases with local caching.
 
-## Git Workflow
-- Work on `dev` branch, not directly on `main`
-- PR from `dev` -> `main` when changes are tested and stable
+## Docs
 
-Verse-level docs (reviews, plans, decision log, work queue) live in `../CLAUDE.md`'s vault at `bouncerverse/` — see `../docs/HOME.md`.
+Git workflow (branch, PR-to-main) is in the global and parent CLAUDE.md, not restated here. Verse-level docs (reviews, plans, decision log, work queue) live in the parent's `bouncerverse/docs/` — start at `../docs/HOME.md`.
 
 ## Package Overview
 
-**bouncermodels** provides pre-trained models for the bouncer R package. Minimal package (2 R files) — no data processing logic, just model loading and caching.
+**bouncermodels** provides pre-trained models for the bouncer R package. Minimal package (3 R files) — no data processing logic, just model loading and caching.
 
 ## Development Commands
 
@@ -23,9 +21,10 @@ devtools::document()
 
 ## Architecture
 
-### R Code (2 files)
+### R Code (3 files)
 - `R/load_model.R` — All exports: `load_bouncer_model()`, `list_available_models()`, `check_model_cache()`, `clear_model_cache()`
 - `R/bouncermodels-package.R` — Package docs
+- `R/versebus.R` — Vendored, canonical copy is `torpverse/torp/R/versebus.R`; `test-versebus-sync.R` pins this file's contents to it byte-for-byte — never edit locally, sync from torp instead
 
 ### Model Categories
 

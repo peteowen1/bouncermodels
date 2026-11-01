@@ -1,6 +1,14 @@
-# bouncermodels (development version)
+# bouncermodels 0.1.1
 
 ## Bug fixes
+
+* **`vb_publish()` never deletes a release asset before replacing it (versebus 1.2.0, #4).** Each
+  data file and `bus_manifest.json` goes up under a temporary `vbnew-` name, is confirmed on GitHub
+  at the local size, and only then replaces the old copy. Also stops at once when no GitHub token
+  is visible, and a refused upload fails straight away.
+
+## Earlier fixes in this release
+
 
 * **`versebus.R`: five silent-failure defects ported from torp's canonical
   copy (`torpverse/torp@` versebus fix, `VERSEBUS_VERSION` 1.1.0; this repo
